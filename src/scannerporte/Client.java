@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,21 +32,19 @@ public class Client {
     
     public void connetti(){
         try {
-            //apro la connessione con il server sulla porta specificata
             connection = new Socket();
-            connection.connect(new InetSocketAddress(address,port));
+            connection.connect(new InetSocketAddress(address,port),100);
             System.out.println("\u001B[32m" + "Connessione aperta con " + connection.getRemoteSocketAddress() + "\u001B[0m");
             connection.close();
-        }
-        catch(ConnectException e){
+        } catch(SocketTimeoutException e){
+            System.err.println("Timeout raggiunto sulla porta " + port);
+        } catch(ConnectException e1){
             System.err.println("Server non disponibile sulla porta " + port);
-        }
-        catch(UnknownHostException e1){
+        } catch(UnknownHostException e2){
             System.err.println("Errore DNS!");
-        }
-        catch(IOException e2){
-            System.err.println(e2);
-            e2.printStackTrace();
+        } catch(IOException e3){
+            System.err.println(e3);
+            e3.printStackTrace();
         }
     }
     
