@@ -23,22 +23,26 @@ public class ScannerPorte {
     public static void main(String[] args) {
         // TODO code application logic her
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        String dom = "";
-        int portI = 0;
-        int portF = 0;
-        try {
-            System.out.print("Inserisci dominio: ");
-            dom = input.readLine();
-            System.out.print("Inserisci porta d'inizio: ");
-            portI = Integer.parseInt(input.readLine());
-            System.out.print("Inserisci porta finale: ");
-            portF = Integer.parseInt(input.readLine());
-        } catch (IOException ex) {
-            Logger.getLogger(ScannerPorte.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for(int i=portI;i<=portF;i++){
-            Client c = new Client(dom,i);
-            c.connetti();   
+        Client c = new Client();
+        GestoreLog log = new GestoreLog("log");
+        int opz = 0;
+        while(opz!=3){
+            System.out.println("Seleziona opzione:\n1) Range di porte\n2) Porte conosciute\n3) Chiudi");
+            try {
+                opz = Integer.parseInt(input.readLine());
+                switch(opz){
+                    case 1:
+                    log.scriviData();
+                    c.rangePorte();
+                    break;
+                case 2:
+                    log.scriviData();
+                    c.porteConosciute();
+                    break;
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ScannerPorte.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
